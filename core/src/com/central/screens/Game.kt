@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -24,34 +25,36 @@ class Game(val application: Application) : KtxScreen {
     private val height = Gdx.graphics.height.toFloat()
     private val helpGuides = 12
 
-    fun addBackgroundGuide(columns: Int) {
-        val texture = Texture(Gdx.files.internal("background.jpg"))
-        texture.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat)
+    companion object {
+        fun addBackgroundGuide(columns: Int, width: Float, height: Float): Actor {
+            val texture = Texture(Gdx.files.internal("background.jpg"))
+            texture.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat)
 
-        val textureRegion = TextureRegion(texture)
-        textureRegion.setRegion(0, 0, texture.width * columns, texture.width * columns)
-        val background = Image(textureRegion)
-        background.setSize(width, height)
-        background.setPosition(0f, Gdx.graphics.height - background.getHeight())
-        stage.addActor(background)
+            val textureRegion = TextureRegion(texture)
+            textureRegion.setRegion(0, 0, texture.width * columns, texture.width * columns)
+            val background = Image(textureRegion)
+            background.setSize(width, height)
+            background.setPosition(0f, Gdx.graphics.height - background.getHeight())
+            return background
+        }
     }
 
     override fun show() {
         super.show()
 
         stage = Stage(ScreenViewport())
-        val row_height = Gdx.graphics.width / 12f
-        val col_width = Gdx.graphics.width / 12f
-        addBackgroundGuide(helpGuides)
+        val rowHeight = Gdx.graphics.width / 12f
+        val colWidth = Gdx.graphics.width / 12f
+        stage.addActor(addBackgroundGuide(helpGuides, width, height))
 
         val label1Style = Label.LabelStyle()
         val myFont = BitmapFont(Gdx.files.internal("bitmapfont/Amble-Regular-26.fnt"))
         label1Style.font = myFont
         label1Style.fontColor = Color.RED
 
-        val label1 = Label("Title (BitmapFont)", label1Style)
-        label1.setSize(width, row_height)
-        label1.setPosition(0f, height - row_height * 2)
+        val label1 = Label("Title (BitmapFont): Hello World", label1Style)
+        label1.setSize(width, rowHeight)
+        label1.setPosition(0f, height - rowHeight * 2)
         label1.setAlignment(Align.center)
         stage.addActor(label1)
 
@@ -70,20 +73,21 @@ class Game(val application: Application) : KtxScreen {
         labelStyle.font = font24
 
         val label2 = Label("True Type Font (.ttf) - Gdx FreeType", labelStyle)
-        label2.setSize(width / helpGuides * 5, row_height)
-        label2.setPosition(col_width * 2, Gdx.graphics.height - row_height * 4)
+        label2.setSize(width, rowHeight)
+        label2.setPosition(0f, height - rowHeight * 4)
+        label2.setAlignment(Align.center)
         stage.addActor(label2)
 
         val mySkin = Skin(Gdx.files.internal("skin/glassy-ui.json"))
 
         val label3 = Label("This is a Label (skin) on  5 columns ", mySkin, "black")
-        label3.setSize(width / helpGuides, row_height)
-        label3.setPosition(col_width * 2, Gdx.graphics.height - row_height * 6)
+        label3.setSize(width / helpGuides, rowHeight)
+        label3.setPosition(colWidth * 2, height - rowHeight * 6)
         stage.addActor(label3)
 
-        val label4 = Label("This is a Label (skin) with a 5 columns width but WITH wrap", mySkin, "black")
-        label4.setSize(width / helpGuides * 5, row_height)
-        label4.setPosition(col_width * 2, Gdx.graphics.height - row_height * 7)
+        val label4 = Label("This is a Label (skin) with a 5 columns width but WITH wrap as you can see it continues to wrap even when running on multiple lines.", mySkin, "black")
+        label4.setSize(width / helpGuides * 5, rowHeight)
+        label4.setPosition(colWidth * 2, height - rowHeight * 7)
         label4.setWrap(true)
         stage.addActor(label4)
 
