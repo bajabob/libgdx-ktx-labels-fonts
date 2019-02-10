@@ -10,7 +10,13 @@ https://libgdx.info/basic-label/
 If you are attempting to learn more about Kotlin and LibGDX this is a great second step, see previous solutions here: https://github.com/bajabob/libgdx-ktx-image-manipulation. This tutorial aims to teach you about LibGDX Fonts and Labels. 
 
 ### Uses 
- TODO
+ 
+* BitmapFont
+* TextureRegion
+* FreeTypeFontGenerator
+* Label
+* Skin
+* TrueTypeFont
 
 ### Screenshot
 
